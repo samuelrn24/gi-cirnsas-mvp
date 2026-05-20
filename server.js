@@ -33,9 +33,9 @@ app.get('/apartamentos', (req, res) => {
 
 // Agregar un apartamento
 app.post('/apartamentos', (req, res) => {
-    const { numero, piso, area, precio, acabados } = req.body;
-    const sql = 'INSERT INTO apartamentos (numero, piso, area, precio, acabados) VALUES (?, ?, ?, ?, ?)';
-    db.query(sql, [numero, piso, area, precio, acabados], (err, result) => {
+    const { numero, area, precio, acabados } = req.body;
+    const sql = 'INSERT INTO apartamentos (numero, area, precio, acabados) VALUES (?, ?, ?, ?)';
+    db.query(sql, [numero, area, precio, acabados], (err, result) => {
         if (err) return res.status(500).json({ error: err.message });
         res.json({ mensaje: 'Apartamento creado', id: result.insertId });
     });

@@ -64,6 +64,7 @@ Abre la terminal y escribe:
 mysql -u root -p
 
 Te va a pedir tu contraseña de MySQL, escríbela y presiona Enter
+(es normal que no se vean los caracteres mientras escribes).
 Una vez dentro verás el texto "mysql>". Ahora ejecuta esto:
 
 CREATE DATABASE cirnsas_db;
@@ -73,7 +74,6 @@ USE cirnsas_db;
 CREATE TABLE apartamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
     numero VARCHAR(10) NOT NULL,
-    piso INTEGER NOT NULL,
     area DECIMAL(10,2) NOT NULL,
     precio DECIMAL(15,2) NOT NULL,
     acabados VARCHAR(100),

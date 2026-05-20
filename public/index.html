@@ -67,7 +67,7 @@
 
         .badge.Disponible { background: #d4edda; color: #155724; }
         .badge.Reservado { background: #fff3cd; color: #856404; }
-        .badge.En-promesa { background: #ffe0b2; color: #e65100; }
+        .badge.En-promesa-de-compra { background: #ffe0b2; color: #e65100; }
         .badge.Escriturado { background: #f8d7da; color: #721c24; }
 
         select {
@@ -166,11 +166,11 @@
     <h2>Inventario de Apartamentos</h2>
 
     <div class="filtros">
-        <button class="activo" onclick="filtrar('Todos')">Todos</button>
-        <button onclick="filtrar('Disponible')">Disponible</button>
-        <button onclick="filtrar('Reservado')">Reservado</button>
-        <button onclick="filtrar('En promesa de compra')">En promesa</button>
-        <button onclick="filtrar('Escriturado')">Escriturado</button>
+        <button class="activo" onclick="filtrar('Todos', event)">Todos</button>
+        <button onclick="filtrar('Disponible', event)">Disponible</button>
+        <button onclick="filtrar('Reservado', event)">Reservado</button>
+        <button onclick="filtrar('En promesa de compra', event)">En promesa</button>
+        <button onclick="filtrar('Escriturado', event)">Escriturado</button>
     </div>
 
     <button class="btn-agregar" onclick="abrirModal()">+ Agregar Apartamento</button>
@@ -179,7 +179,6 @@
         <thead>
             <tr>
                 <th>Número</th>
-                <th>Piso</th>
                 <th>Área (m²)</th>
                 <th>Precio</th>
                 <th>Acabados</th>
@@ -198,10 +197,6 @@
         <div class="form-group">
             <label>Número de apartamento</label>
             <input type="text" id="numero" placeholder="Ej: 301">
-        </div>
-        <div class="form-group">
-            <label>Piso</label>
-            <input type="number" id="piso" placeholder="Ej: 3">
         </div>
         <div class="form-group">
             <label>Área (m²)</label>
@@ -241,7 +236,6 @@
         tbody.innerHTML = filtrados.map(a => `
             <tr>
                 <td>${a.numero}</td>
-                <td>${a.piso}</td>
                 <td>${a.area}</td>
                 <td>$${Number(a.precio).toLocaleString('es-CO')}</td>
                 <td>${a.acabados || '-'}</td>
@@ -258,7 +252,7 @@
         `).join('');
     }
 
-    function filtrar(estado) {
+    function filtrar(estado, event) {
         filtroActual = estado;
         document.querySelectorAll('.filtros button').forEach(b => b.classList.remove('activo'));
         event.target.classList.add('activo');
@@ -281,7 +275,6 @@
     function cerrarModal() {
         document.getElementById('modal').classList.remove('activo');
         document.getElementById('numero').value = '';
-        document.getElementById('piso').value = '';
         document.getElementById('area').value = '';
         document.getElementById('precio').value = '';
         document.getElementById('acabados').value = '';
@@ -289,12 +282,11 @@
 
     async function guardarApartamento() {
         const numero = document.getElementById('numero').value;
-        const piso = document.getElementById('piso').value;
         const area = document.getElementById('area').value;
         const precio = document.getElementById('precio').value;
         const acabados = document.getElementById('acabados').value;
 
-        if (!numero || !piso || !area || !precio) {
+        if (!numero || !area || !precio) {
             alert('Por favor completa todos los campos obligatorios');
             return;
         }
@@ -302,7 +294,7 @@
         await fetch('/apartamentos', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ numero, piso, area, precio, acabados })
+            body: JSON.stringify({ numero, area, precio, acabados })
         });
 
         cerrarModal();
