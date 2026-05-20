@@ -34,10 +34,14 @@ app.get('/apartamentos', (req, res) => {
 // Agregar un apartamento
 app.post('/apartamentos', (req, res) => {
     const { numero, area, precio, acabados } = req.body;
-    const sql = 'INSERT INTO apartamentos (numero, area, precio, acabados) VALUES (?, ?, ?, ?)';
-    db.query(sql, [numero, area, precio, acabados], (err, result) => {
+    db.query('SELECT id FROM apartamentos WHERE numero = ?', [numero], (err, results) => {
         if (err) return res.status(500).json({ error: err.message });
-        res.json({ mensaje: 'Apartamento creado', id: result.insertId });
+        if (results.length > 0) return res.status(400).json({ error: 'Ya existe un apartamento con ese número' });
+        const sql = 'INSERT INTO apartamentos (numero, area, precio, acabados) VALUES (?, ?, ?, ?)';
+        db.query(sql, [numero, area, precio, acabados], (err, result) => {
+            if (err) return res.status(500).json({ error: err.message });
+            res.json({ mensaje: 'Apartamento creado', id: result.insertId });
+        });
     });
 });
 

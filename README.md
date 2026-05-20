@@ -73,7 +73,7 @@ USE cirnsas_db;
 
 CREATE TABLE apartamentos (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    numero VARCHAR(10) NOT NULL,
+    numero VARCHAR(10) NOT NULL UNIQUE,
     area DECIMAL(10,2) NOT NULL,
     precio DECIMAL(15,2) NOT NULL,
     acabados VARCHAR(100),
